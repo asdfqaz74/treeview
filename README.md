@@ -8,7 +8,7 @@
 
 # Sample
 
-![예시사진](image.png)
+![예시사진](public/image.png)
 
 ## Item identifier
 
