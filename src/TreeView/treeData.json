@@ -13,8 +13,22 @@
       "id": "pickers",
       "label": "Date and Time Pickers",
       "children": [
-        { "id": "pickers-community", "label": "@mui/x-date-pickers" },
-        { "id": "pickers-pro", "label": "@mui/x-date-pickers-pro" }
+        {
+          "id": "pickers-community",
+          "label": "@mui/x-date-pickers",
+          "children": [
+            {
+              "id": "pickers-localization",
+              "label": "@mui/x-date-pickers-localization",
+              "children": [
+                { "id": "pickers-localization-en", "label": "English" },
+                { "id": "pickers-localization-ko", "label": "Korean" }
+              ]
+            }
+          ]
+        },
+        { "id": "pickers-pro", "label": "@mui/x-date-pickers-pro" },
+        { "id": "pickers-premium", "label": "@mui/x-date-pickers-premium" }
       ]
     },
     {

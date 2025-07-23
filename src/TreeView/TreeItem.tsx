@@ -1,28 +1,22 @@
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 
-interface TreeItemProps {
-  itemId: string;
+interface TreeItemData {
+  id: string;
   label: string;
   disabled?: boolean;
-  children?: TreeItemProps[];
+  children?: TreeItemData[];
 }
 
-export default function TreeItemComponent({
-  itemId,
-  label,
-  disabled = false,
-  children,
-}: TreeItemProps) {
+interface TreeItemProps {
+  data: TreeItemData;
+}
+
+export default function TreeItemComponent({ data }: TreeItemProps) {
   return (
-    <TreeItem itemId={itemId} label={label} disabled={disabled}>
-      {children &&
-        children.map((child) => (
-          <TreeItem
-            key={child.itemId}
-            itemId={child.itemId}
-            label={child.label}
-            disabled={child.disabled}
-          />
+    <TreeItem itemId={data.id} label={data.label} disabled={data.disabled}>
+      {data.children &&
+        data.children.map((child) => (
+          <TreeItemComponent key={child.id} data={child} />
         ))}
     </TreeItem>
   );
