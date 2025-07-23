@@ -21,8 +21,8 @@
               "id": "pickers-localization",
               "label": "@mui/x-date-pickers-localization",
               "children": [
-                { "id": "pickers-localization-en", "label": "English" },
-                { "id": "pickers-localization-ko", "label": "Korean" }
+                { "id": "pickers-localization-en", "label": "영어" },
+                { "id": "pickers-localization-ko", "label": "한국어" }
               ]
             }
           ]
@@ -41,7 +41,7 @@
     },
     {
       "id": "tree-view",
-      "label": "Tree View",
+      "label": "비활성화된 메뉴입니다",
       "disabled": true,
       "children": [
         { "id": "tree-view-community", "label": "@mui/x-tree-view" },
