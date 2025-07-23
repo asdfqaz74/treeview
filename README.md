@@ -6,6 +6,10 @@
         └── TreeView.tsx
 ```
 
+# Sample
+
+![예시사진](image.png)
+
 ## Item identifier
 
 각 트리 아이템에는 고유한 `itemId`가 있어야 합니다. 이는 내부적으로 다양한 모델에서 항목을 식별하고 업데이트에서 추적하는 데 사용됩니다.
