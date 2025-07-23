@@ -1,33 +1,9 @@
-```tsx
-import Box from "@mui/material/Box";
-import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeview";
-import { TreeItem } from "@mui/x-tree-view/TreeItem";
-
-export default function App() {
-  return (
-    <Box sx={{ minHeight: 352, minWidth: 250 }}>
-      <SimpleTreeView>
-        <TreeItem itemId="grid" label="Data Grid">
-          <TreeItem itemId="grid-community" label="@mui/x-data-grid" />
-          <TreeItem itemId="grid-pro" label="@mui/x-data-grid-pro" />
-          <TreeItem itemId="grid-premium" label="@mui/x-data-grid-premium" />
-        </TreeItem>
-        <TreeItem itemId="pickers" label="Date and Time Pickers">
-          <TreeItem itemId="pickers-community" label="@mui/x-date-pickers" />
-          <TreeItem itemId="pickers-pro" label="@mui/x-date-pickers-pro" />
-        </TreeItem>
-        <TreeItem itemId="charts" label="Charts">
-          <TreeItem itemId="charts-community" label="@mui/x-charts" />
-          <TreeItem itemId="charts-pro" label="@mui/x-charts-pro" />
-        </TreeItem>
-        <TreeItem itemId="tree-view" label="Tree View" disabled>
-          <TreeItem itemId="tree-view-community" label="@mui/x-tree-view" />
-          <TreeItem itemId="tree-view-pro" label="@mui/x-tree-view-pro" />
-        </TreeItem>
-      </SimpleTreeView>
-    </Box>
-  );
-}
+```
+    src/
+    └─ TreeView/
+        ├── treeData.json # TreeView 컴포넌트에 들어갈 더미데이터
+        ├── TreeItems.tsx # TreeView 를 구성하는 컴포넌트
+        └── TreeView.tsx
 ```
 
 ## Item identifier
