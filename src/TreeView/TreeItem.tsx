@@ -1,6 +1,7 @@
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
-import FolderIcon from '@mui/icons-material/Folder';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import FolderIcon from "@mui/icons-material/Folder";
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 
 interface TreeItemData {
   id: string;
@@ -15,15 +16,16 @@ interface TreeItemProps {
 
 export default function TreeItemComponent({ data }: TreeItemProps) {
   const hasChildren = data.children && data.children.length > 0;
-  
+
   return (
-    <TreeItem 
-      itemId={data.id} 
-      label={data.label} 
+    <TreeItem
+      itemId={data.id}
+      label={data.label}
       disabled={data.disabled}
       slots={{
         collapseIcon: hasChildren ? FolderOpenIcon : undefined,
         expandIcon: hasChildren ? FolderIcon : undefined,
+        endIcon: !hasChildren ? TextSnippetIcon : undefined,
       }}
     >
       {data.children &&
