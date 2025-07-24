@@ -1,37 +1,42 @@
-import { TreeItem } from "@mui/x-tree-view/TreeItem";
-import FolderIcon from "@mui/icons-material/Folder";
-import FolderOpenIcon from "@mui/icons-material/FolderOpen";
-import TextSnippetIcon from "@mui/icons-material/TextSnippet";
+import { Box } from "@mui/material";
+import { SimpleTreeView } from "@mui/x-tree-view";
+import BoardTreeView, { type BoardTreeViewProps } from "./Board";
+import MenuTreeView, { type MenuTreeViewProps } from "./Menu";
+import type { TBaseTreeView } from "./types";
 
-interface TreeItemData {
-  id: string;
-  label: string;
-  disabled?: boolean;
-  children?: TreeItemData[];
-}
+export type TreeItemProps = BoardTreeViewProps | MenuTreeViewProps;
 
-interface TreeItemProps {
-  data: TreeItemData;
-}
+// TreeItem 데이터와 타입을 결합하는 인터페이스
+export type TreeItemSelectorProps = TBaseTreeView & {
+  type?: "board" | "menu"; // 옵셔널로 만들어서 기본값 제공
+};
 
-export default function TreeItemComponent({ data }: TreeItemProps) {
-  const hasChildren = data.children && data.children.length > 0;
+const TreeItemSelector = (props: TreeItemSelectorProps) => {
+  const { type = "board", ...rest } = props; // 기본값을 "board"로 설정
 
+  // TypeGuard pattern
+  if (type === "board") {
+    return <BoardTreeView {...rest} type="board" />;
+  }
+
+  return <MenuTreeView {...rest} type="menu" />; // Default to MenuTreeView
+};
+
+// 공통으로 Box와 SimpleTreeView로 감싸는 컴포넌트
+export type TreeViewWrapperProps = {
+  children: React.ReactNode;
+  sx?: object;
+};
+
+export const TreeViewWrapper = ({
+  children,
+  sx = { minHeight: 352, minWidth: 250 },
+}: TreeViewWrapperProps) => {
   return (
-    <TreeItem
-      itemId={data.id}
-      label={data.label}
-      disabled={data.disabled}
-      slots={{
-        collapseIcon: hasChildren ? FolderOpenIcon : undefined,
-        expandIcon: hasChildren ? FolderIcon : undefined,
-        endIcon: !hasChildren ? TextSnippetIcon : undefined,
-      }}
-    >
-      {data.children &&
-        data.children.map((child) => (
-          <TreeItemComponent key={child.id} data={child} />
-        ))}
-    </TreeItem>
+    <Box sx={sx}>
+      <SimpleTreeView>{children}</SimpleTreeView>
+    </Box>
   );
-}
+};
+
+export default TreeItemSelector;
