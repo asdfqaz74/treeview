@@ -22,34 +22,34 @@ export const boardData = {
             { id: "java-api", label: "Java API" },
           ],
         },
-      ],
-    },
-    {
-      id: "documents",
-      label: "문서",
-      children: [
-        { id: "readme", label: "README.md" },
-        { id: "changelog", label: "CHANGELOG.md" },
-        { id: "license", label: "LICENSE" },
-      ],
-    },
-    {
-      id: "config",
-      label: "설정 파일",
-      children: [
-        { id: "package-json", label: "package.json" },
-        { id: "tsconfig", label: "tsconfig.json" },
-        { id: "eslint", label: ".eslintrc.js" },
-      ],
-    },
-    {
-      id: "assets",
-      label: "에셋",
-      disabled: true,
-      children: [
-        { id: "images", label: "이미지" },
-        { id: "fonts", label: "폰트" },
-        { id: "icons", label: "아이콘" },
+        {
+          id: "documents",
+          label: "문서",
+          children: [
+            { id: "readme", label: "README.md" },
+            { id: "changelog", label: "CHANGELOG.md" },
+            { id: "license", label: "LICENSE" },
+          ],
+        },
+        {
+          id: "config",
+          label: "설정 파일",
+          children: [
+            { id: "package-json", label: "package.json" },
+            { id: "tsconfig", label: "tsconfig.json" },
+            { id: "eslint", label: ".eslintrc.js" },
+          ],
+        },
+        {
+          id: "assets",
+          label: "에셋",
+
+          children: [
+            { id: "images", label: "이미지" },
+            { id: "fonts", label: "폰트" },
+            { id: "icons", label: "아이콘" },
+          ],
+        },
       ],
     },
   ],

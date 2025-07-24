@@ -22,10 +22,9 @@ export default function TreeView({ type }: TreeViewProps) {
   // 일반 TreeView (board 또는 menu)
   return (
     <TreeViewWrapper type={type}>
-      {type === "menu" &&
-        treeData.treeItems.map((item) => (
-          <TreeItemSelector key={item.id} {...item} type={type} />
-        ))}
+      {treeData.treeItems.map((item) => (
+        <TreeItemSelector key={item.id} {...item} type={type} />
+      ))}
     </TreeViewWrapper>
   );
 }
