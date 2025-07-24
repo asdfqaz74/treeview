@@ -1,11 +1,32 @@
-import { TreeItem } from "@mui/x-tree-view";
+import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
+import { styled } from "@mui/material/styles";
 import type { TBaseTreeView } from "../types";
-// import type { BoardTreeViewRecipeVariantProps } from "./board.recipe";
 import FolderIcon from "@mui/icons-material/Folder";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 
 export type BoardTreeViewProps = TBaseTreeView & { type: "board" };
+
+const CustomTreeItem = styled(TreeItem)(({ theme }) => ({
+  color: theme.palette.grey[200],
+  [`& .${treeItemClasses.content}`]: {
+    borderRadius: theme.spacing(0.5),
+    padding: theme.spacing(0.5, 1),
+    margin: theme.spacing(0.2, 0),
+    [`& .${treeItemClasses.label}`]: {
+      fontSize: "0.8rem",
+      fontWeight: 500,
+    },
+  },
+  [`& .${treeItemClasses.groupTransition}`]: {
+    marginLeft: 15,
+    paddingLeft: 18,
+    borderLeft: `2px dashed white`,
+  },
+  ...theme.applyStyles("light", {
+    color: "white",
+  }),
+}));
 
 const BoardTreeView = ({
   id,
@@ -16,7 +37,7 @@ const BoardTreeView = ({
   const hasChildren = children && children.length > 0;
 
   return (
-    <TreeItem
+    <CustomTreeItem
       itemId={id}
       label={label}
       disabled={disabled}
@@ -37,7 +58,7 @@ const BoardTreeView = ({
             type="board"
           />
         ))}
-    </TreeItem>
+    </CustomTreeItem>
   );
 };
 
