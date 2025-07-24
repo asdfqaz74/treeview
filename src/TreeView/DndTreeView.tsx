@@ -15,9 +15,8 @@ export default function DndTreeView() {
     targetId: string,
     position: "before" | "after" | "inside"
   ) => {
-    console.log(`Moving ${draggedId} to ${targetId} (${position})`);
-
     const newTree = TreeUtils.moveNode(data, draggedId, targetId, position);
+
     setData(newTree);
   };
 

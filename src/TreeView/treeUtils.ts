@@ -72,20 +72,28 @@ export const TreeUtils = {
       });
     }
 
-    // before/after 로직
-    const newTree: TBaseTreeView[] = [];
-    for (let i = 0; i < tree.length; i++) {
-      const node = tree[i];
+    // before/after의 경우, 타겟 노드의 부모를 찾아서 해당 레벨에서 삽입
+    const targetParent = TreeUtils.findParent(tree, targetId);
 
-      if (node.id === targetId) {
-        if (position === "before") {
-          newTree.push(newNode, node);
-        } else {
-          newTree.push(node, newNode);
+    if (!targetParent) {
+      // 루트 레벨의 노드인 경우
+      return TreeUtils.insertAtRootLevel(tree, newNode, targetId, position);
+    } else {
+      // 중첩된 노드인 경우, 부모의 children 배열에서 삽입
+      return tree.map((node) => {
+        if (node.id === targetParent.id) {
+          return {
+            ...node,
+            children: TreeUtils.insertAtRootLevel(
+              node.children || [],
+              newNode,
+              targetId,
+              position
+            ),
+          };
         }
-      } else {
         if (node.children) {
-          newTree.push({
+          return {
             ...node,
             children: TreeUtils.insertNode(
               node.children,
@@ -93,12 +101,34 @@ export const TreeUtils = {
               targetId,
               position
             ),
-          });
-        } else {
-          newTree.push(node);
+          };
         }
+        return node;
+      });
+    }
+  },
+
+  // 루트 레벨에서 before/after 삽입
+  insertAtRootLevel: (
+    tree: TBaseTreeView[],
+    newNode: TBaseTreeView,
+    targetId: string,
+    position: "before" | "after"
+  ): TBaseTreeView[] => {
+    const newTree: TBaseTreeView[] = [];
+
+    for (const node of tree) {
+      if (node.id === targetId) {
+        if (position === "before") {
+          newTree.push(newNode, node);
+        } else {
+          newTree.push(node, newNode);
+        }
+      } else {
+        newTree.push(node);
       }
     }
+
     return newTree;
   },
 
@@ -111,9 +141,11 @@ export const TreeUtils = {
   ): TBaseTreeView[] => {
     // 드래그된 노드 찾기
     const draggedNode = TreeUtils.findNode(tree, draggedId);
-    if (!draggedNode) return tree;
+    if (!draggedNode) {
+      return tree;
+    }
 
-    // 순환 참조 방지: 타겟이 드래그된 노드의 자손인지 확인
+    // 순환 참조 방지를 위한 헬퍼 함수들
     const isDescendant = (node: TBaseTreeView, ancestorId: string): boolean => {
       if (node.id === ancestorId) return true;
       if (node.children) {
@@ -122,16 +154,114 @@ export const TreeUtils = {
       return false;
     };
 
+    const isAncestor = (
+      potentialAncestorId: string,
+      nodeId: string
+    ): boolean => {
+      const ancestor = TreeUtils.findNode(tree, potentialAncestorId);
+      if (!ancestor) return false;
+      return isDescendant(ancestor, nodeId);
+    };
+
     const targetNode = TreeUtils.findNode(tree, targetId);
-    if (targetNode && isDescendant(targetNode, draggedId)) {
-      return tree; // 순환 참조 방지
+    const draggedParent = TreeUtils.findParent(tree, draggedId);
+
+    // 특수 케이스 1: 직접 자식을 부모 레벨로 승격
+    if (
+      draggedParent &&
+      draggedParent.id === targetId &&
+      position !== "inside"
+    ) {
+      return TreeUtils.moveChildToParentLevel(
+        tree,
+        draggedId,
+        targetId,
+        position
+      );
     }
 
-    // 1. 드래그된 노드 제거
-    let newTree = TreeUtils.removeNode(tree, draggedId);
+    // 특수 케이스 2: 후손을 조상 레벨로 승격
+    if (
+      targetNode &&
+      isAncestor(targetId, draggedId) &&
+      position !== "inside"
+    ) {
+      return TreeUtils.moveChildToParentLevel(
+        tree,
+        draggedId,
+        targetId,
+        position
+      );
+    }
 
-    // 2. 새 위치에 삽입
+    // 순환 참조 방지: 부모를 자식으로 이동 방지
+    if (targetNode && isDescendant(targetNode, draggedId)) {
+      return tree;
+    }
+
+    // 일반적인 이동: 제거 후 삽입
+    let newTree = TreeUtils.removeNode(tree, draggedId);
     newTree = TreeUtils.insertNode(newTree, draggedNode, targetId, position);
+
+    return newTree;
+  },
+
+  // 자식 노드를 부모 레벨로 승격시키는 함수
+  moveChildToParentLevel: (
+    tree: TBaseTreeView[],
+    childId: string,
+    parentId: string,
+    position: "before" | "after"
+  ): TBaseTreeView[] => {
+    // 자식 노드 찾기
+    const childNode = TreeUtils.findNode(tree, childId);
+    if (!childNode) {
+      return tree;
+    }
+
+    // 부모의 부모 찾기 (조부모)
+    const grandParent = TreeUtils.findParent(tree, parentId);
+
+    // 1. 자식 노드를 트리에서 제거
+    let newTree = TreeUtils.removeNode(tree, childId);
+
+    // 2. 부모와 같은 레벨에 삽입
+    if (!grandParent) {
+      // 부모가 루트 레벨에 있는 경우
+      newTree = TreeUtils.insertAtRootLevel(
+        newTree,
+        childNode,
+        parentId,
+        position
+      );
+    } else {
+      // 부모가 중첩되어 있는 경우, 조부모의 children 레벨에서 삽입
+      newTree = newTree.map((node) => {
+        if (node.id === grandParent.id) {
+          return {
+            ...node,
+            children: TreeUtils.insertAtRootLevel(
+              node.children || [],
+              childNode,
+              parentId,
+              position
+            ),
+          };
+        }
+        if (node.children) {
+          return {
+            ...node,
+            children: TreeUtils.insertNode(
+              node.children,
+              childNode,
+              parentId,
+              position
+            ),
+          };
+        }
+        return node;
+      });
+    }
 
     return newTree;
   },

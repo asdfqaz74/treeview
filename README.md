@@ -153,7 +153,7 @@ npm run build
 
 ## 🔗 예시 화면
 
-![TreeView 예시](public/image.png)
+![TreeView 예시](public/test.gif)
 
 세 가지 타입의 TreeView를 나란히 비교할 수 있습니다:
 
