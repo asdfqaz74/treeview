@@ -5,24 +5,21 @@ import MenuTreeView, { type MenuTreeViewProps } from "./Menu";
 import type { TBaseTreeView } from "./types";
 
 export type TreeItemProps = BoardTreeViewProps | MenuTreeViewProps;
-
-// TreeItem 데이터와 타입을 결합하는 인터페이스
 export type TreeItemSelectorProps = TBaseTreeView & {
-  type?: "board" | "menu"; // 옵셔널로 만들어서 기본값 제공
+  type?: "board" | "menu";
 };
 
 const TreeItemSelector = (props: TreeItemSelectorProps) => {
-  const { type = "board", ...rest } = props; // 기본값을 "board"로 설정
+  const { type = "board", ...rest } = props;
 
   // TypeGuard pattern
   if (type === "board") {
     return <BoardTreeView {...rest} type="board" />;
   }
 
-  return <MenuTreeView {...rest} type="menu" />; // Default to MenuTreeView
+  return <MenuTreeView {...rest} type="menu" />;
 };
 
-// 공통으로 Box와 SimpleTreeView로 감싸는 컴포넌트
 export type TreeViewWrapperProps = {
   children: React.ReactNode;
   sx?: object;
