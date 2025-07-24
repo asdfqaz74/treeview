@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import treeData from "./treeData.json";
+import treeData from "./dummy/treeData.json";
 import { TreeViewWrapper } from "./TreeItem";
 import DndMenuTreeView from "./Dnd";
 import type { TBaseTreeView } from "./types";

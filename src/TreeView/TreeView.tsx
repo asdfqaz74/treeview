@@ -1,5 +1,5 @@
 import DndTreeView from "./DndTreeView";
-import treeData from "./treeData.json";
+import treeData from "./dummy/treeData.json";
 import TreeItemSelector, { TreeViewWrapper } from "./TreeItem";
 
 type TreeViewProps = {
@@ -19,11 +19,13 @@ export default function TreeView({ type }: TreeViewProps) {
     return <DndTreeView />;
   }
 
+  // 일반 TreeView (board 또는 menu)
   return (
-    <TreeViewWrapper>
-      {treeData.treeItems.map((item) => (
-        <TreeItemSelector key={item.id} {...item} type={type} />
-      ))}
+    <TreeViewWrapper type={type}>
+      {type === "menu" &&
+        treeData.treeItems.map((item) => (
+          <TreeItemSelector key={item.id} {...item} type={type} />
+        ))}
     </TreeViewWrapper>
   );
 }
